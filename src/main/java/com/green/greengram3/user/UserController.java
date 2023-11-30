@@ -1,6 +1,8 @@
 package com.green.greengram3.user;
 
 import com.green.greengram3.common.ResVo;
+import com.green.greengram3.user.model.UserSigninDto;
+import com.green.greengram3.user.model.UserSigninVo;
 import com.green.greengram3.user.model.UserSignupDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,5 +28,13 @@ public class UserController {
     public ResVo postSignup(@RequestBody UserSignupDto dto) {
         log.info("dto: {}", dto);
         return service.signup(dto);
+    }
+
+
+    @PostMapping("/signin")
+    @Operation(summary = "인증", description = "아이디/비번을 활용한 인증처리")
+    public UserSigninVo postSignin(@RequestBody UserSigninDto dto) {
+        log.info("dto: {}", dto);
+        return service.signin(dto);  //result - 1: 성공, 2: 아이디 없음, 3: 비밀번호 틀림
     }
 }
