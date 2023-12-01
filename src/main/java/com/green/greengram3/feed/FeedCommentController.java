@@ -2,12 +2,13 @@ package com.green.greengram3.feed;
 
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.feed.model.FeedCommentInsDto;
+import com.green.greengram3.feed.model.FeedCommentSelDto;
+import com.green.greengram3.feed.model.FeedCommentSelVo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -22,5 +23,9 @@ public class FeedCommentController {
         return service.postFeedComment(dto);
     }
 
+    @GetMapping
+    public List<FeedCommentSelVo> getFeedCommentAll(FeedCommentSelDto dto) { //4~999까지의 레코드만 리턴 될 수 있도록
+        return service.getFeedCommentAll(dto);
+    }
 
 }

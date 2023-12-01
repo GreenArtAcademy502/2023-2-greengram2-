@@ -17,7 +17,7 @@
         INNER JOIN t_user B
         ON A.iuser = B.iuser
         WHERE A.ifeed = #{ifeed}
-        ORDER BY A.ifeed
+        ORDER BY A.ifeed_comment
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
