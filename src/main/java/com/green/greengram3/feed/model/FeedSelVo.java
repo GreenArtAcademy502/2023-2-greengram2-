@@ -14,4 +14,5 @@ public class FeedSelVo {
     private String writerNm;
     private String writerPic;
     private List<String> pics;
+    private int isFav; //1: 좋아요 했음, 0: 좋아요 아님
 }

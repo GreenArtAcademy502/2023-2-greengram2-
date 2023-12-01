@@ -13,7 +13,7 @@
 
     <select id="selFeedPicsAll">
         SELECT pic FROM t_feed_pics
-        WHERE ifeed = #{dfgsdfgdfsgbdfsgdfgsdfg}
+        WHERE ifeed = #{ifeed}
     </select>
 
 

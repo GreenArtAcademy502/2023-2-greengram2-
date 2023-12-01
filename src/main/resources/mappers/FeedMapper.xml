@@ -13,9 +13,13 @@
         SELECT
             A.ifeed, A.contents, A.location, A.created_at AS createdAt
             , B.iuser AS writerIuser, B.nm AS writerNm, B.pic AS writerPic
+            , IF(C.ifeed IS NULL, 0, 1) AS isFav
         FROM t_feed A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
+        LEFT JOIN t_feed_fav C
+        ON A.ifeed = C.ifeed
+        AND C.iuser = #{loginedIuser}
         ORDER BY A.ifeed DESC
         LIMIT #{startIdx}, #{rowCount}
     </select>
