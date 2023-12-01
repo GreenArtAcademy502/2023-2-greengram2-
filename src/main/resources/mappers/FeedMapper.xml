@@ -9,6 +9,15 @@
         , location = #{location}
     </insert>
 
-
+    <select id="selFeedAll">
+        SELECT
+            A.ifeed, A.contents, A.location, A.created_at AS createdAt
+            , B.iuser AS writerIuser, B.nm AS writerNm, B.pic AS writerPic
+        FROM t_feed A
+        INNER JOIN t_user B
+        ON A.iuser = B.iuser
+        ORDER BY A.ifeed DESC
+        LIMIT #{startIdx}, #{rowCount}
+    </select>
 
 </mapper>
