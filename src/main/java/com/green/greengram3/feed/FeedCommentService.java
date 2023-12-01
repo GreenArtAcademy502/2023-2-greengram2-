@@ -22,7 +22,7 @@ public class FeedCommentService {
     }
 
     public List<FeedCommentSelVo> getFeedCommentAll(FeedCommentSelDto dto) {
-        dto.setStartIdx(4);
+        dto.setStartIdx(3);
         dto.setRowCount(999);
         return mapper.selFeedCommentAll(dto);
     }
