@@ -2,10 +2,7 @@ package com.green.greengram3.feed;
 
 import com.green.greengram3.common.Const;
 import com.green.greengram3.common.ResVo;
-import com.green.greengram3.feed.model.FeedFavDto;
-import com.green.greengram3.feed.model.FeedInsDto;
-import com.green.greengram3.feed.model.FeedSelDto;
-import com.green.greengram3.feed.model.FeedSelVo;
+import com.green.greengram3.feed.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,6 +16,7 @@ public class FeedService {
     private final FeedMapper mapper;
     private final FeedPicsMapper picsMapper;
     private final FeedFavMapper favMapper;
+    private final FeedCommentMapper commentMapper;
 
     public ResVo postFeed(FeedInsDto dto) {
         int feedAffectedRows = mapper.insFeed(dto);
@@ -29,9 +27,22 @@ public class FeedService {
 
     public List<FeedSelVo> getFeedAll(FeedSelDto dto) {
         List<FeedSelVo> list = mapper.selFeedAll(dto);
+
+        FeedCommentSelDto fcDto = new FeedCommentSelDto();
+        fcDto.setStartIdx(0);
+        fcDto.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         for(FeedSelVo vo : list) {
             List<String> pics = picsMapper.selFeedPicsAll(vo.getIfeed());
             vo.setPics(pics);
+
+            fcDto.setIfeed(vo.getIfeed());
+            List<FeedCommentSelVo> comments = commentMapper.selFeedCommentAll(fcDto);
+            vo.setComments(comments);
+
+            if(comments.size() == Const.FEED_COMMENT_FIRST_CNT) {
+                vo.setIsMoreComment(1);
+                comments.remove(comments.size() - 1);
+            }
         }
         return list;
     }
