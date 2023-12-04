@@ -16,5 +16,13 @@
         WHERE ifeed = #{ifeed}
     </select>
 
+    <delete id="delFeedPicsAll">
+        DELETE A
+        FROM t_feed_pics A
+        INNER JOIN t_feed B
+        ON A.ifeed = B.ifeed
+        WHERE B.ifeed = #{ifeed}
+        AND B.iuser = #{iuser}
+    </delete>
 
 </mapper>

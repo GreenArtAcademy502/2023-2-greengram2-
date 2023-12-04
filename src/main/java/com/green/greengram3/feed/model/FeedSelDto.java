@@ -19,6 +19,9 @@ public class FeedSelDto {
     @Schema(title = "로그인한 유저pk")
     private int loginedIuser;
 
+    @Schema(title = "프로필 주인 유저pk", required = false)
+    private int targetIuser;
+
     @JsonIgnore
     private int startIdx;
 

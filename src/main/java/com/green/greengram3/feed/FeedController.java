@@ -1,10 +1,7 @@
 package com.green.greengram3.feed;
 
 import com.green.greengram3.common.ResVo;
-import com.green.greengram3.feed.model.FeedFavDto;
-import com.green.greengram3.feed.model.FeedInsDto;
-import com.green.greengram3.feed.model.FeedSelDto;
-import com.green.greengram3.feed.model.FeedSelVo;
+import com.green.greengram3.feed.model.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -37,6 +34,12 @@ public class FeedController {
     public List<FeedSelVo> getFeedAll(FeedSelDto dto) {
         log.info("dto: {}", dto);
         return service.getFeedAll(dto);
+    }
+
+    @DeleteMapping
+    public ResVo delFeed(FeedDelDto dto) {
+        log.info("dto: {}", dto);
+        return service.delFeed(dto);
     }
 
 

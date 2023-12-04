@@ -24,4 +24,10 @@
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
+    <delete id="delFeed">
+        DELETE FROM t_feed
+        WHERE ifeed = #{ifeed}
+        AND iuser = #{iuser}
+    </delete>
+
 </mapper>

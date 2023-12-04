@@ -14,4 +14,11 @@
         AND iuser = #{iuser}
     </delete>
 
+    <delete id="delFeedFavAll">
+        DELETE FROM t_feed_fav
+        WHERE ifeed = #{ifeed}
+    </delete>
+
+
+
 </mapper>

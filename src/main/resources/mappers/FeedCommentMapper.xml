@@ -21,5 +21,8 @@
         LIMIT #{startIdx}, #{rowCount}
     </select>
 
-
+    <delete id="delFeedCommentAll">
+        DELETE FROM t_feed_comment
+        WHERE ifeed = #{ifeed}
+    </delete>
 </mapper>

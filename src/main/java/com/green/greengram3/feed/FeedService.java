@@ -6,7 +6,9 @@ import com.green.greengram3.feed.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.beans.Transient;
 import java.util.List;
 
 @Slf4j
@@ -45,6 +47,24 @@ public class FeedService {
             }
         }
         return list;
+    }
+
+    public ResVo delFeed(FeedDelDto dto) {
+        //1 이미지
+        int picsAffectedRows = picsMapper.delFeedPicsAll(dto);
+        if(picsAffectedRows == 0) {
+            return new ResVo(Const.FAIL);
+        }
+
+        //2 좋아요
+        int favAffectedRows = favMapper.delFeedFavAll(dto);
+
+        //3 댓글
+        int commentAffectedRows = commentMapper.delFeedCommentAll(dto);
+
+        //4 피드
+        int feedAffectedRows = mapper.delFeed(dto);
+        return new ResVo(Const.SUCCESS);
     }
 
     //--------------- t_feed_fav
