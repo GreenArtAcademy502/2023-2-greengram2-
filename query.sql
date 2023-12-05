@@ -65,4 +65,13 @@ CREATE TABLE IF NOT EXISTS `t_feed_pics` (
     PRIMARY KEY (`ifeed_pics`),
     KEY `ifeed` (`ifeed`),
     CONSTRAINT `t_feed_pics_ibfk_1` FOREIGN KEY (`ifeed`) REFERENCES `t_feed` (`ifeed`)
-    );
+);
+
+CREATE TABLE IF NOT EXISTS `t_user_follow`(
+  from_iuser INT UNSIGNED NOT NULL,
+  to_iuser INT UNSIGNED NOT NULL CHECK(to_iuser != from_iuser),
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY(from_iuser, to_iuser),
+  FOREIGN KEY(from_iuser) REFERENCES t_user(iuser),
+  FOREIGN KEY(to_iuser) REFERENCES t_user(iuser)
+);

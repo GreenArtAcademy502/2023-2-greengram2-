@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Slf4j
 @Service
@@ -49,5 +50,18 @@ public class UserService {
                 .nm(entity.getNm())
                 .pic(entity.getPic())
                 .build();
+    }
+
+    public UserInfoVo getUserInfo(UserInfoSelDto dto) {
+        return mapper.selUserInfo(dto);
+    }
+
+    public ResVo toggleFollow(UserFollowDto dto) {
+        int delAffectedRows = mapper.delUserFollow(dto);
+        if(delAffectedRows == 1) {
+            return new ResVo(Const.FAIL);
+        }
+        int insAffectedRows = mapper.insUserFollow(dto);
+        return new ResVo(Const.SUCCESS);
     }
 }
