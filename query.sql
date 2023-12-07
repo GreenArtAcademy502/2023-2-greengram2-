@@ -75,3 +75,28 @@ CREATE TABLE IF NOT EXISTS `t_user_follow`(
   FOREIGN KEY(from_iuser) REFERENCES t_user(iuser),
   FOREIGN KEY(to_iuser) REFERENCES t_user(iuser)
 );
+
+CREATE TABLE t_dm (
+    idm INT UNSIGNED AUTO_INCREMENT PRIMARY KEY
+    , last_msg VARCHAR(2000)
+    , last_msg_at DATETIME ON UPDATE CURRENT_TIMESTAMP
+    , created_at datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE t_dm_user(
+    idm INT UNSIGNED
+    , iuser INT UNSIGNED
+    , PRIMARY KEY(idm, iuser)
+    , FOREIGN KEY (idm) REFERENCES t_dm(idm)
+    , FOREIGN KEY (iuser) REFERENCES t_user(iuser)
+);
+
+CREATE TABLE t_dm_msg(
+    idm INT UNSIGNED
+    , seq INT UNSIGNED
+    , iuser INT UNSIGNED NOT NULL
+    , msg VARCHAR(2000) NOT NULL
+    , created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    , PRIMARY KEY (idm, seq)
+    , FOREIGN KEY (idm, iuser) REFERENCES t_dm_user(idm, iuser)
+);
