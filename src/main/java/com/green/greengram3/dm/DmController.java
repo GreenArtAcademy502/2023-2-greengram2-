@@ -33,8 +33,6 @@ public class DmController {
     @GetMapping("/msg")
     public List<DmMsgSelVo> getDmMsgAll(DmMsgSelDto dto) {
         log.info("dto : {}", dto);
-        List<DmMsgSelVo> list = new ArrayList();
-        //return service.getMsgAll(dto);
-        return list;
+        return service.getMsgAll(dto);
     }
 }

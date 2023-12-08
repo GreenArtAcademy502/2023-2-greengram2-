@@ -25,6 +25,6 @@ public class DmService {
         return new ResVo(dto.getSeq());
     }
     public List<DmMsgSelVo> getMsgAll(DmMsgSelDto dto) {
-        return null;
+        return mapper.selDmMsgAll(dto);
     }
 }

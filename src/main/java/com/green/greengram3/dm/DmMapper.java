@@ -14,7 +14,7 @@ public interface DmMapper {
 
 
     //----------------------- t_dm_user
-    int insDmuser(DmUserInsDto dto);
+    int insDmUser(DmUserInsDto dto);
 
     //----------------------- t_dm_msg
     int insDmMsg(DmMsgInsDto dto);
