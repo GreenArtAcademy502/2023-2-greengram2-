@@ -1,13 +1,12 @@
 package com.green.greengram3.dm;
 
-import com.green.greengram3.dm.model.DmMsgSelDto;
-import com.green.greengram3.dm.model.DmMsgSelVo;
+import com.green.greengram3.common.ResVo;
+import com.green.greengram3.dm.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -18,10 +17,24 @@ public class DmController {
 
     private final DmService service;
 
-    @GetMapping("/msg")
-    public List<DmMsgSelVo> getMsgAll(DmMsgSelDto dto) {
-        log.info("dto : {}", dto);
-        return service.getMsgAll(dto);
+    @GetMapping
+    public List<DmSelVo> getDmAll(DmSelDto dto) {
+        return service.getDmAll(dto);
     }
 
+
+
+    //----------------------------- t_dm_msg
+    @PostMapping("/msg")
+    public ResVo postDmMsg(@RequestBody DmMsgInsDto dto) {
+        return service.postDmMsg(dto);
+    }
+
+    @GetMapping("/msg")
+    public List<DmMsgSelVo> getDmMsgAll(DmMsgSelDto dto) {
+        log.info("dto : {}", dto);
+        List<DmMsgSelVo> list = new ArrayList();
+        //return service.getMsgAll(dto);
+        return list;
+    }
 }
