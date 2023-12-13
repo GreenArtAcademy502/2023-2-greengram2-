@@ -1,5 +1,7 @@
 package com.green.greengram3.dm;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.messaging.Message;
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.dm.model.*;
 import com.green.greengram3.user.UserMapper;
@@ -38,8 +40,8 @@ public class DmService {
 
         UserSelDto usDto = new UserSelDto();
         usDto.setIuser(dto.getOtherPersonIuser());
-
         UserEntity userEntity = userMapper.selUser(usDto);
+
         return DmSelVo.builder()
                 .idm(dto.getIdm())
                 .otherPersonIuser(userEntity.getIuser())
@@ -48,13 +50,23 @@ public class DmService {
                 .build();
     }
 
-
     public ResVo postDmMsg(DmMsgInsDto dto) {
         int insAffectedRows = mapper.insDmMsg(dto);
         //last msg update
-        int updAffectedRows = mapper.updDmLastMsg(dto);
+        if(insAffectedRows == 1) {
+            int updAffectedRows = mapper.updDmLastMsg(dto);
+        }
+
+        UserEntity otherPerson = mapper.selOtherPersonByLoginUser(dto);
+        Message message = Message.builder()
+                .putData("idm", String.valueOf(dto.getIdm()))
+                .putData("msg", dto.getMsg())
+                .setToken(otherPerson.getFirebaseToken())
+                .build();
+        FirebaseMessaging.getInstance().sendAsync(message);
         return new ResVo(dto.getSeq());
     }
+
     public List<DmMsgSelVo> getMsgAll(DmMsgSelDto dto) {
         List<DmMsgSelVo> list = mapper.selDmMsgAll(dto);
         return list;

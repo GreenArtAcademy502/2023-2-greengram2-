@@ -10,16 +10,16 @@
     </insert>
 
     <select id="selUser">
-        SELECT iuser, uid, upw, nm, pic, created_at AS createdAt, updated_at AS updatedAt
+        SELECT iuser, uid, upw, nm, pic, firebase_token AS firebaseToken
+             , created_at AS createdAt, updated_at AS updatedAt
         FROM t_user
-        <where>
+        WHERE
             <if test=" uid != null and uid != '' ">
                 uid = #{uid}
             </if>
             <if test=" iuser > 0 ">
                 iuser = #{iuser}
             </if>
-        </where>
     </select>
 
     <!--
