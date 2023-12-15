@@ -25,7 +25,7 @@
     </select>
 
     <select id="selOtherPersonByLoginUser">
-        SELECT B.*
+        SELECT B.iuser, B.pic, B.firebase_token AS firebaseToken
         FROM t_dm_user A
         INNER JOIN t_user B
         ON A.iuser = B.iuser
