@@ -24,6 +24,9 @@ class FeedFavMapperTest {
         dto.setIfeed(6);
         dto.setIuser(4);
 
+        List<FeedFavDto> preResult1 = mapper.selFeedFavForTest(dto);
+        assertEquals(0, preResult1.size(), "첫번째 insert전 미리 확인");
+
         int affectedRows1 = mapper.insFeedFav(dto);
         assertEquals(1, affectedRows1, "첫번째 insert");
 

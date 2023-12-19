@@ -10,7 +10,7 @@ public class Exam2 {
     }
 
     @AfterAll
-    public static void dcdd() {
+    public static void afterAll() {
         System.out.println("afterAll");
     }
 
