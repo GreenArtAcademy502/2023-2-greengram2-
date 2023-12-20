@@ -22,12 +22,14 @@ public class FeedService {
 
     public ResVo postFeed(FeedInsDto dto) {
         int feedAffectedRows = mapper.insFeed(dto);
+        log.info("feedAffectedRows: {}", feedAffectedRows);
         int feedPicsAffectedRows = picsMapper.insFeedPics(dto);
-
+        log.info("feedPicsAffectedRows: {}", feedPicsAffectedRows);
         return new ResVo(dto.getIfeed());
     }
 
     public List<FeedSelVo> getFeedAll(FeedSelDto dto) {
+        System.out.println("!!!!!");
         List<FeedSelVo> list = mapper.selFeedAll(dto);
 
         FeedCommentSelDto fcDto = new FeedCommentSelDto();
@@ -35,16 +37,9 @@ public class FeedService {
         fcDto.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         for(FeedSelVo vo : list) {
             List<String> pics = picsMapper.selFeedPicsAll(vo.getIfeed());
-            vo.setPics(pics);
+            //vo.setPics(pics);
 
-            fcDto.setIfeed(vo.getIfeed());
-            List<FeedCommentSelVo> comments = commentMapper.selFeedCommentAll(fcDto);
-            vo.setComments(comments);
 
-            if(comments.size() == Const.FEED_COMMENT_FIRST_CNT) {
-                vo.setIsMoreComment(1);
-                comments.remove(comments.size() - 1);
-            }
         }
         return list;
     }

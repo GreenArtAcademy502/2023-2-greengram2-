@@ -2,6 +2,7 @@ package com.green.greengram3.feed;
 
 import com.green.greengram3.feed.model.FeedDelDto;
 import com.green.greengram3.feed.model.FeedInsDto;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -24,13 +25,14 @@ class FeedPicsMapperTest {
         this.dto.setIfeed(6);
 
         List<String> pics = new ArrayList();
+
+        this.dto.setPics(pics);
         pics.add("a.jpg");
         pics.add("b.jpg");
-        this.dto.setPics(pics);
+        pics.add("c.jpg");
     }
 
-    @Autowired
-    private FeedPicsMapper mapper;
+    @Autowired private FeedPicsMapper mapper;
 
     @BeforeEach
     public void beforeEach() {
@@ -52,15 +54,9 @@ class FeedPicsMapperTest {
         List<String> afterList = mapper.selFeedPicsAll(dto.getIfeed());
         assertEquals(dto.getPics().size(), afterList.size());
 
-        assertEquals(dto.getPics().get(0), afterList.get(0));
-        assertEquals(dto.getPics().get(1), afterList.get(1));
+        for(int i=0; i<dto.getPics().size(); i++) {
+            assertEquals(dto.getPics().get(i), afterList.get(i));
+        }
     }
 
-    @Test
-    void selFeedPicsAll() {
-    }
-
-    @Test
-    void delFeedPicsAll() {
-    }
 }
