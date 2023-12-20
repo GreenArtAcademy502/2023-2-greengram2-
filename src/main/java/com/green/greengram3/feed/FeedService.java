@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.beans.Transient;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -19,6 +20,7 @@ public class FeedService {
     private final FeedPicsMapper picsMapper;
     private final FeedFavMapper favMapper;
     private final FeedCommentMapper commentMapper;
+
 
     public ResVo postFeed(FeedInsDto dto) {
         int feedAffectedRows = mapper.insFeed(dto);
@@ -37,9 +39,7 @@ public class FeedService {
         fcDto.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         for(FeedSelVo vo : list) {
             List<String> pics = picsMapper.selFeedPicsAll(vo.getIfeed());
-            //vo.setPics(pics);
-
-
+            vo.setPics(pics);
         }
         return list;
     }
