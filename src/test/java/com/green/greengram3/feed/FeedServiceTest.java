@@ -1,10 +1,8 @@
 package com.green.greengram3.feed;
 
+import com.green.greengram3.common.Const;
 import com.green.greengram3.common.ResVo;
-import com.green.greengram3.feed.model.FeedInsDto;
-import com.green.greengram3.feed.model.FeedSelDto;
-import com.green.greengram3.feed.model.FeedSelVo;
-import lombok.ToString;
+import com.green.greengram3.feed.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +34,12 @@ class FeedServiceTest {
     @Test
     void postFeed() {
         when(mapper.insFeed(any())).thenReturn(1);
-        when(picsMapper.insFeedPics(any())).thenReturn(2);
+        when(picsMapper.insFeedPics(any())).thenReturn(3);
 
         FeedInsDto dto = new FeedInsDto();
         dto.setIfeed(100);
         ResVo vo = service.postFeed(dto);
-        assertEquals(dto.getIfeed(), vo.getResult());
+        assertEquals(dto.getIfeed(), vo.getResult(), "auto-increment값을 리턴하지 않음");
 
         verify(mapper).insFeed(any());
         verify(picsMapper).insFeedPics(any());
@@ -57,7 +55,6 @@ class FeedServiceTest {
         FeedSelVo feedSelVo1 = new FeedSelVo();
         feedSelVo1.setIfeed(1);
         feedSelVo1.setContents("일번 feedSelVo");
-
 
         FeedSelVo feedSelVo2 = new FeedSelVo();
         feedSelVo2.setIfeed(2);
@@ -89,6 +86,56 @@ class FeedServiceTest {
         when( picsMapper.selFeedPicsAll( 1 ) ).thenReturn(feed1Pics);
         when( picsMapper.selFeedPicsAll( 2 ) ).thenReturn(feed2Pics);
 
+        //-------------- ifeed(1) 댓글
+        List<FeedCommentSelVo> cmtsFeed1 = new ArrayList<>();
+
+        FeedCommentSelVo cmtVo1_1 = new FeedCommentSelVo();
+        cmtVo1_1.setIfeedComment(1);
+        cmtVo1_1.setComment("1-cmtVo1_1");
+
+        FeedCommentSelVo cmtVo1_2 = new FeedCommentSelVo();
+        cmtVo1_2.setIfeedComment(2);
+        cmtVo1_2.setComment("2-cmtVo1_2");
+
+        cmtsFeed1.add(cmtVo1_1);
+        cmtsFeed1.add(cmtVo1_2);
+
+        FeedCommentSelDto fcDto1 = new FeedCommentSelDto();
+        fcDto1.setStartIdx(0);
+        fcDto1.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
+        fcDto1.setIfeed(1);
+        when( commentMapper.selFeedCommentAll(fcDto1) ).thenReturn(cmtsFeed1);
+
+        //-------------- ifeed(2) 댓글
+        List<FeedCommentSelVo> cmtsFeed2 = new ArrayList<>();
+
+        FeedCommentSelVo cmtVo2_1 = new FeedCommentSelVo();
+        cmtVo2_1.setIfeedComment(3);
+        cmtVo2_1.setComment("3-cmtVo2_1");
+
+        FeedCommentSelVo cmtVo2_2 = new FeedCommentSelVo();
+        cmtVo2_2.setIfeedComment(4);
+        cmtVo2_2.setComment("4-cmtVo2_2");
+
+        FeedCommentSelVo cmtVo2_3 = new FeedCommentSelVo();
+        cmtVo2_3.setIfeedComment(5);
+        cmtVo2_3.setComment("5-cmtVo2_3");
+
+        FeedCommentSelVo cmtVo2_4 = new FeedCommentSelVo();
+        cmtVo2_4.setIfeedComment(6);
+        cmtVo2_4.setComment("6-cmtVo2_4");
+
+        cmtsFeed2.add(cmtVo2_1);
+        cmtsFeed2.add(cmtVo2_2);
+        cmtsFeed2.add(cmtVo2_3);
+        cmtsFeed2.add(cmtVo2_4);
+
+        FeedCommentSelDto fcDto2 = new FeedCommentSelDto();
+        fcDto2.setStartIdx(0);
+        fcDto2.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
+        fcDto2.setIfeed(2);
+        when( commentMapper.selFeedCommentAll(fcDto2) ).thenReturn(cmtsFeed2);
+
         FeedSelDto dto = new FeedSelDto();
         List<FeedSelVo> result = service.getFeedAll(dto);
 
@@ -104,6 +151,14 @@ class FeedServiceTest {
             List<String> pics2 = picsArr[i];
             assertEquals(vo.getPics(), pics2);
         }
+
+        List<FeedCommentSelVo> commentsResult1 = list.get(0).getComments();
+        assertEquals(cmtsFeed1, commentsResult1, "ifeed(1) 댓글 체크");
+        assertEquals(0, list.get(0).getIsMoreComment(), "ifeed(1) isMoreComment 체크");
+
+        List<FeedCommentSelVo> commentsResult2 = list.get(1).getComments();
+        assertEquals(cmtsFeed2, commentsResult2, "ifeed(2) 댓글 체크");
+        assertEquals(1, list.get(1).getIsMoreComment(), "ifeed(2) isMoreComment 체크");
     }
 
 
