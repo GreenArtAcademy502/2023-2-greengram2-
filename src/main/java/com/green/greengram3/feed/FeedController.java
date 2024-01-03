@@ -3,15 +3,12 @@ package com.green.greengram3.feed;
 import com.green.greengram3.common.ResVo;
 import com.green.greengram3.feed.model.*;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @Slf4j
@@ -25,7 +22,9 @@ public class FeedController {
     @Operation(summary = "피드 등록", description = "피드 등록 처리")
     @PostMapping
     public ResVo postFeed(@RequestBody FeedInsDto dto) {
-        return service.postFeed(dto);
+        ResVo vo = service.postFeed(dto);
+        System.out.println(vo.getResult());
+        return vo;
     }
 
     @GetMapping
@@ -33,7 +32,11 @@ public class FeedController {
             "<br><br>page: 페이지<br>loginedIuser: 로그인한 유저 pk")
     public List<FeedSelVo> getFeedAll(FeedSelDto dto) {
         log.info("dto: {}", dto);
-        return service.getFeedAll(dto);
+        //return service.getFeedAll(dto);
+
+        List<FeedSelVo> list = service.getFeedAll(dto);
+        log.info("list: {}", list);
+        return list;
     }
 
     @DeleteMapping

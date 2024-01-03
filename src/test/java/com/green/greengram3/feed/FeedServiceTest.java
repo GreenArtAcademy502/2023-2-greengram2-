@@ -18,6 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import static org.mockito.ArgumentMatchers.any;
 
+import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -33,8 +34,8 @@ class FeedServiceTest {
 
     @Test
     void postFeed() {
-        when(mapper.insFeed(any())).thenReturn(1);
-        when(picsMapper.insFeedPics(any())).thenReturn(3);
+        given(mapper.insFeed(any())).willReturn(1);
+        given(picsMapper.insFeedPics(any())).willReturn(3);
 
         FeedInsDto dto = new FeedInsDto();
         dto.setIfeed(100);
@@ -64,7 +65,7 @@ class FeedServiceTest {
         list.add(feedSelVo1);
         list.add(feedSelVo2);
 
-        when( mapper.selFeedAll(any()) ).thenReturn(list);
+        given( mapper.selFeedAll(any()) ).willReturn(list);
 
 
         List<String> feed1Pics = Arrays.stream( new String[]{ "a.jpg", "b.jpg" } ).toList();
@@ -83,8 +84,8 @@ class FeedServiceTest {
         picsArr[0] = feed1Pics;
         picsArr[1] = feed2Pics;
 
-        when( picsMapper.selFeedPicsAll( 1 ) ).thenReturn(feed1Pics);
-        when( picsMapper.selFeedPicsAll( 2 ) ).thenReturn(feed2Pics);
+        given( picsMapper.selFeedPicsAll( 1 ) ).willReturn(feed1Pics);
+        given( picsMapper.selFeedPicsAll( 2 ) ).willReturn(feed2Pics);
 
         //-------------- ifeed(1) 댓글
         List<FeedCommentSelVo> cmtsFeed1 = new ArrayList<>();
@@ -104,7 +105,7 @@ class FeedServiceTest {
         fcDto1.setStartIdx(0);
         fcDto1.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         fcDto1.setIfeed(1);
-        when( commentMapper.selFeedCommentAll(fcDto1) ).thenReturn(cmtsFeed1);
+        given( commentMapper.selFeedCommentAll(fcDto1) ).willReturn(cmtsFeed1);
 
         //-------------- ifeed(2) 댓글
         List<FeedCommentSelVo> cmtsFeed2 = new ArrayList<>();
@@ -130,11 +131,13 @@ class FeedServiceTest {
         cmtsFeed2.add(cmtVo2_3);
         cmtsFeed2.add(cmtVo2_4);
 
+        assertEquals(4, cmtsFeed2.size());
+
         FeedCommentSelDto fcDto2 = new FeedCommentSelDto();
         fcDto2.setStartIdx(0);
         fcDto2.setRowCount(Const.FEED_COMMENT_FIRST_CNT);
         fcDto2.setIfeed(2);
-        when( commentMapper.selFeedCommentAll(fcDto2) ).thenReturn(cmtsFeed2);
+        given( commentMapper.selFeedCommentAll(fcDto2) ).willReturn(cmtsFeed2);
 
         FeedSelDto dto = new FeedSelDto();
         List<FeedSelVo> result = service.getFeedAll(dto);
@@ -155,10 +158,13 @@ class FeedServiceTest {
         List<FeedCommentSelVo> commentsResult1 = list.get(0).getComments();
         assertEquals(cmtsFeed1, commentsResult1, "ifeed(1) 댓글 체크");
         assertEquals(0, list.get(0).getIsMoreComment(), "ifeed(1) isMoreComment 체크");
+        assertEquals(2, list.get(0).getComments().size());
 
         List<FeedCommentSelVo> commentsResult2 = list.get(1).getComments();
         assertEquals(cmtsFeed2, commentsResult2, "ifeed(2) 댓글 체크");
         assertEquals(1, list.get(1).getIsMoreComment(), "ifeed(2) isMoreComment 체크");
+        assertEquals(3, cmtsFeed2.size());
+
     }
 
 
